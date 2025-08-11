@@ -1,0 +1,296 @@
+inherited frmManutencaoFuncbasProdutos: TfrmManutencaoFuncbasProdutos
+  Caption = 'Manuten'#231#227'o - Fun'#231#245'es b'#225'sicas - Produtos'
+  ClientHeight = 271
+  ClientWidth = 738
+  KeyPreview = True
+  OnKeyDown = FormKeyDown
+  ExplicitWidth = 744
+  ExplicitHeight = 300
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnl_Client: TPanel
+    Width = 585
+    Height = 271
+    Color = clBtnFace
+    ExplicitLeft = 48
+    ExplicitTop = -8
+    ExplicitWidth = 680
+    ExplicitHeight = 341
+    object Label1: TLabel
+      Left = 19
+      Top = 32
+      Width = 74
+      Height = 16
+      Caption = 'ID. Produto'
+      FocusControl = DBEdtCodigo
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label11: TLabel
+      Left = 19
+      Top = 86
+      Width = 103
+      Height = 16
+      Caption = 'C'#243'digo de Barra'
+      FocusControl = DBEditCodBarra
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 19
+      Top = 132
+      Width = 119
+      Height = 16
+      Caption = 'Descri'#231#227'o Produto'
+      FocusControl = DBEdtDescrProduto
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 19
+      Top = 184
+      Width = 110
+      Height = 16
+      Caption = 'Pre'#231'o de Compra'
+      FocusControl = DBEdtPrcCompra
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 205
+      Top = 183
+      Width = 102
+      Height = 16
+      Caption = 'Pre'#231'o de Venda'
+      FocusControl = DBEdtPrcVenda
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label7: TLabel
+      Left = 387
+      Top = 183
+      Width = 91
+      Height = 16
+      Caption = 'Qtde. Estoque'
+      FocusControl = DBEdtQtdeEstoque
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object DBEdtCodigo: TDBEdit
+      Left = 19
+      Top = 51
+      Width = 76
+      Height = 21
+      TabStop = False
+      Color = clInfoBk
+      DataField = 'ID'
+      DataSource = ds_CadProdutos
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object DBEditCodBarra: TDBEdit
+      Left = 19
+      Top = 105
+      Width = 159
+      Height = 21
+      DataField = 'CODIGO_BAR'
+      DataSource = ds_CadProdutos
+      TabOrder = 1
+      OnExit = DBEditCodBarraExit
+      OnKeyPress = DBEditCodBarraKeyPress
+    end
+    object DBEdtDescrProduto: TDBEdit
+      Left = 19
+      Top = 151
+      Width = 542
+      Height = 21
+      DataField = 'DESCRICAO'
+      DataSource = ds_CadProdutos
+      TabOrder = 2
+    end
+    object DBEdtPrcCompra: TDBEdit
+      Left = 19
+      Top = 205
+      Width = 174
+      Height = 21
+      DataField = 'PRECO_COMPRA'
+      DataSource = ds_CadProdutos
+      TabOrder = 3
+    end
+    object DBEdtPrcVenda: TDBEdit
+      Left = 205
+      Top = 205
+      Width = 174
+      Height = 21
+      DataField = 'PRECO_VENDA'
+      DataSource = ds_CadProdutos
+      TabOrder = 4
+    end
+    object DBEdtQtdeEstoque: TDBEdit
+      Left = 387
+      Top = 205
+      Width = 174
+      Height = 21
+      DataField = 'QTD_ESTOQUE'
+      DataSource = ds_CadProdutos
+      TabOrder = 5
+    end
+  end
+  inherited pnl_Right: TPanel
+    Left = 585
+    Height = 271
+    inherited btn_Restaurar: TBitBtn
+      Left = 10
+      OnClick = btn_RestaurarClick
+      ExplicitLeft = 10
+    end
+    inherited btn_Salvar: TBitBtn
+      Top = 159
+      OnClick = btn_SalvarClick
+      ExplicitTop = 159
+    end
+    inherited btn_Sair: TBitBtn
+      Top = 213
+      ExplicitTop = 213
+    end
+    inherited dbn_Dados: TDBNavigator
+      DataSource = ds_CadProdutos
+      Hints.Strings = ()
+    end
+  end
+  object TB_Produtos: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'CODIGO_BAR'
+        DataType = ftString
+        Size = 13
+      end
+      item
+        Name = 'DESCRICAO'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'PRECO_COMPRA'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'PRECO_VENDA'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'QTD_ESTOQUE'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'CATEGORIAPRD'
+        DataType = ftInteger
+      end
+      item
+        Name = 'DESCRCATEGORIAPRD'
+        Attributes = [faReadonly, faFixed]
+        DataType = ftString
+        Size = 26
+      end>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'DSP_Produtos'
+    StoreDefs = True
+    Left = 392
+    Top = 33
+    object TB_ProdutosID: TIntegerField
+      DisplayWidth = 5
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object TB_ProdutosCODIGO_BAR: TStringField
+      DisplayLabel = 'C'#243'digo de Barra'
+      DisplayWidth = 18
+      FieldName = 'CODIGO_BAR'
+      Origin = 'CODIGO_BAR'
+      Size = 13
+    end
+    object TB_ProdutosDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o do Produto'
+      DisplayWidth = 67
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 60
+    end
+    object TB_ProdutosPRECO_COMPRA: TFMTBCDField
+      DisplayLabel = 'Pre'#231'o de Compra'
+      DisplayWidth = 14
+      FieldName = 'PRECO_COMPRA'
+      Origin = 'PRECO_COMPRA'
+      DisplayFormat = ',0.00'
+      EditFormat = ',0.00'
+      Precision = 18
+      Size = 2
+    end
+    object TB_ProdutosPRECO_VENDA: TFMTBCDField
+      DisplayLabel = 'Pre'#231'o de Venda'
+      DisplayWidth = 13
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      DisplayFormat = ',0.00'
+      EditFormat = ',0.00'
+      Precision = 18
+      Size = 2
+    end
+    object TB_ProdutosQTD_ESTOQUE: TFMTBCDField
+      DisplayLabel = 'Qtde. em Estoque'
+      DisplayWidth = 15
+      FieldName = 'QTD_ESTOQUE'
+      Origin = 'QTD_ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object DSP_Produtos: TDataSetProvider
+    Left = 424
+    Top = 33
+  end
+  object ds_CadProdutos: TDataSource
+    DataSet = TB_Produtos
+    Left = 464
+    Top = 33
+  end
+end

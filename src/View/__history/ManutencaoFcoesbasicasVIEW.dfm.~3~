@@ -1,0 +1,46 @@
+object frmManutencaoFuncoesbasicas: TfrmManutencaoFuncoesbasicas
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Manuten'#231#227'o - Fun'#231#245'es b'#225'sicas'
+  ClientHeight = 341
+  ClientWidth = 833
+  Color = 16761992
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnl_Client: TPanel
+    Left = 0
+    Top = 0
+    Width = 640
+    Height = 341
+    Align = alClient
+    BevelOuter = bvNone
+    Color = clWindow
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitLeft = 8
+    ExplicitTop = 8
+    ExplicitWidth = 537
+    ExplicitHeight = 325
+  end
+  object pnl_Right: TPanel
+    Left = 640
+    Top = 0
+    Width = 193
+    Height = 341
+    Align = alRight
+    BevelOuter = bvNone
+    TabOrder = 1
+    ExplicitLeft = 632
+    ExplicitTop = 8
+    ExplicitHeight = 329
+  end
+end

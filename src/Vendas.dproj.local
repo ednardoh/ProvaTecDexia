@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/10/25 12:26:22.000.422,=C:\Users\ednar\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/08/07 23:55:05.000.922,=C:\Users\ednar\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/08/07 23:56:02.000.762,C:\Sistemas\Dexia\src\Vendas.dproj=C:\Users\ednar\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2025/08/07 23:57:12.000.760,=C:\Sistemas\Dexia\src\View\uPrincipalVIEW.pas</Transaction>
+    <Transaction>2025/08/07 23:59:31.000.741,=C:\Sistemas\Dexia\src\Conexao\UConexaoBDpas.pas</Transaction>
+    <Transaction>2025/08/07 23:59:31.000.661,=C:\Sistemas\Dexia\src\Conexao\UConecta.pas</Transaction>
+    <Transaction>2025/08/07 23:59:31.000.669,=C:\Sistemas\Dexia\src\Conexao\uConexao.pas</Transaction>
+    <Transaction>2025/08/08 01:00:09.000.172,=C:\Sistemas\Dexia\src\Controller\uSistemaControl.pas</Transaction>
+    <Transaction>2025/08/08 10:19:09.000.359,=C:\Sistemas\Dexia\src\Model\uEnumerado.pas</Transaction>
+    <Transaction>2025/08/08 10:19:09.000.389,=C:\Sistemas\Dexia\src\Model\uProdutoModel.pas</Transaction>
+    <Transaction>2025/08/08 10:23:37.000.612,=C:\Sistemas\Dexia\src\DAO\uProdutoDAO.pas</Transaction>
+    <Transaction>2025/08/08 11:07:07.000.660,=C:\Sistemas\Dexia\src\Controller\uProdutoControl.pas</Transaction>
+    <Transaction>2025/08/08 14:20:16.000.125,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/08 14:23:37.000.208,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicas.dfm</Transaction>
+    <Transaction>2025/08/08 14:23:37.000.208,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicas.pas</Transaction>
+    <Transaction>2025/08/08 17:36:46.000.860,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/08 17:38:13.000.624,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\ManutencaoFcoesbasicasVIEW.pas</Transaction>
+    <Transaction>2025/08/08 17:38:13.000.624,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\ManutencaoFcoesbasicasVIEW.dfm</Transaction>
+    <Transaction>2025/08/08 17:38:29.000.302,C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicas.pas=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicasVIEW.pas</Transaction>
+    <Transaction>2025/08/08 17:38:29.000.302,C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicas.dfm=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicasVIEW.dfm</Transaction>
+    <Transaction>2025/08/09 00:41:37.000.215,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/09 00:42:05.000.931,=C:\Sistemas\Dexia\src\Unit2.pas</Transaction>
+    <Transaction>2025/08/09 00:44:19.000.873,C:\Sistemas\Dexia\src\Unit2.dfm=C:\Sistemas\Dexia\src\View\uConsultaFuncbasProdutosVIEW.dfm</Transaction>
+    <Transaction>2025/08/09 00:44:19.000.873,C:\Sistemas\Dexia\src\Unit2.pas=C:\Sistemas\Dexia\src\View\uConsultaFuncbasProdutosVIEW.pas</Transaction>
+    <Transaction>2025/08/09 00:47:36.000.949,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\ManutencaoFbasprodutosVIEW.pas</Transaction>
+    <Transaction>2025/08/09 00:47:36.000.949,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\ManutencaoFbasprodutosVIEW.dfm</Transaction>
+    <Transaction>2025/08/09 21:50:56.000.160,=C:\Sistemas\Dexia\src\Model\uVendasModel.pas</Transaction>
+    <Transaction>2025/08/09 21:51:07.000.405,=C:\Sistemas\Dexia\src\DAO\uVendasDAO.pas</Transaction>
+    <Transaction>2025/08/09 21:51:16.000.619,=C:\Sistemas\Dexia\src\Controller\uVendasControl.pas</Transaction>
+    <Transaction>2025/08/09 23:08:38.000.107,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/09 23:10:01.000.451,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicasVendasVIEW.pas</Transaction>
+    <Transaction>2025/08/09 23:10:01.000.451,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\uConsultaFuncoesbasicasVendasVIEW.dfm</Transaction>
+    <Transaction>2025/08/09 23:12:14.000.872,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/09 23:12:42.000.781,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\ManutencaoFcoesbasicasVendasVIEW.pas</Transaction>
+    <Transaction>2025/08/09 23:12:42.000.781,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\ManutencaoFcoesbasicasVendasVIEW.dfm</Transaction>
+    <Transaction>2025/08/10 10:46:24.000.203,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/10 10:47:01.000.999,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\uRelProdutosVIEW.pas</Transaction>
+    <Transaction>2025/08/10 10:47:01.000.999,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\uRelProdutosVIEW.dfm</Transaction>
+    <Transaction>2025/08/10 21:45:24.000.630,=C:\Sistemas\Dexia\src\Unit1.pas</Transaction>
+    <Transaction>2025/08/10 21:46:29.000.700,C:\Sistemas\Dexia\src\Unit1.dfm=C:\Sistemas\Dexia\src\View\uRelVendasVIEW.dfm</Transaction>
+    <Transaction>2025/08/10 21:46:29.000.700,C:\Sistemas\Dexia\src\Unit1.pas=C:\Sistemas\Dexia\src\View\uRelVendasVIEW.pas</Transaction>
+  </Transactions>
+</BorlandProject>

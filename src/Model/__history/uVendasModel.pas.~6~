@@ -1,0 +1,146 @@
+unit uVendasModel;
+
+interface
+
+uses
+  uEnumerado, FireDAC.Comp.Client;
+
+type
+  TVendasModel = class
+    private
+      FAcao: TAcao;
+      FID: integer;
+      FCODPRODUTO: string;
+      FNUMVENDA: integer;
+      FDATAVENDA: TDateTime;
+      FQUANTIDADE: double;
+      FVALORUNITARIO: double;
+      FVALORTOTAL: double;
+
+      procedure SetAcao(const Value: TAcao);
+      procedure SetID(const Value: integer);
+      procedure SetCODPRODUTO(const Value: string);
+      procedure SetNUMVENDA(const Value: integer);
+      procedure SetDATAVENDA(const Value: TDateTime);
+      procedure SetQUANTIDADE(const Value: double);
+      procedure SetVALORUNITARIO(const Value: double);
+      procedure SetVALORTOTAL(const Value: double);
+    public
+      function Obter(AValorpesquisa: string): TFDQuery;
+      function ObterComFiltro(AIndice: Integer; ACampo: string; AValorpesquisa: string): TFDQuery;
+      function Salvar: Boolean;
+      function GetId: Integer;
+
+      property Acao: TAcao            read FAcao          write SetAcao;
+      property ID: integer            read FID            write SetID;
+      property NUMVENDA: integer      read FNUMVENDA      write SetNUMVENDA;
+      property DATAVENDA: TDateTime   read FDATAVENDA     write SetDATAVENDA;
+      property CODPRODUTO: string     read FCODPRODUTO    write SetCODPRODUTO;
+      property QUANTIDADE: double     read FQUANTIDADE    write SetQUANTIDADE;
+      property VALORUNITARIO: double  read FVALORUNITARIO write SetVALORUNITARIO;
+      property VALORTOTAL: double     read FVALORTOTAL     write SetVALORTOTAL;
+
+  end;
+
+implementation
+
+{ TPedidoXProdutosModel }
+
+Uses uVendasDAO;
+
+function TVendasModel.GetId: Integer;
+var
+  vVendasDAO: TVendasDAO;
+begin
+  vVendasDAO := TVendasDAO.Create;
+  try
+    Result := vVendasDAO.GetId;
+  finally
+    vVendasDAO.Free;
+  end;
+end;
+
+function TVendasModel.Obter(AValorpesquisa: string): TFDQuery;
+var
+  vVendasDAO: TVendasDAO;
+begin
+  vVendasDAO := TVendasDAO.Create;
+  try
+    Result := vVendasDAO.Obter(AValorpesquisa);
+  finally
+    vVendasDAO.Free;
+  end;
+end;
+
+function TVendasModel.ObterComFiltro(AIndice: Integer; ACampo,
+  AValorpesquisa: string): TFDQuery;
+var
+  vVendasDAO: TVendasDAO;
+begin
+  vVendasDAO := TVendasDAO.Create;
+  try
+    Result := vVendasDAO.ObterComFiltro(AIndice, ACampo, AValorpesquisa);
+  finally
+    vVendasDAO.Free;
+  end;
+end;
+
+function TVendasModel.Salvar: Boolean;
+var
+  vVendasDAO: TVendasDAO;
+begin
+  Result := False;
+
+  vVendasDAO := TVendasDAO.Create;
+  try
+    case FAcao of
+      uEnumerado.tacIncluir: Result := vVendasDAO.Incluir(Self);
+      uEnumerado.tacAlterar: Result := vVendasDAO.Alterar(Self);
+      uEnumerado.tacExcluir: Result := vVendasDAO.Excluir(Self);
+    end;
+  finally
+    vVendasDAO.Free;
+  end;
+end;
+
+procedure TVendasModel.SetAcao(const Value: TAcao);
+begin
+  FAcao := Value;
+end;
+
+procedure TVendasModel.SetCODPRODUTO(const Value: string);
+begin
+  FCODPRODUTO := Value;
+end;
+
+procedure TVendasModel.SetDATAVENDA(const Value: TDateTime);
+begin
+  FDATAVENDA := Value;
+end;
+
+procedure TVendasModel.SetID(const Value: integer);
+begin
+  FID := Value;
+end;
+
+procedure TVendasModel.SetNUMVENDA(const Value: integer);
+begin
+  FNUMVENDA := Value;
+end;
+
+procedure TVendasModel.SetQUANTIDADE(const Value: double);
+begin
+  FQUANTIDADE := Value;
+end;
+
+procedure TVendasModel.SetVALORTOTAL(const Value: double);
+begin
+  FVALORTOTAL := Value;
+end;
+
+procedure TVendasModel.SetVALORUNITARIO(const Value: double);
+begin
+  FVALORUNITARIO := Value;
+end;
+
+end.

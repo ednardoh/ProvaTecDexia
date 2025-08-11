@@ -1,0 +1,170 @@
+unit uProdutoModel;
+
+interface
+
+uses
+  uEnumerado, FireDAC.Comp.Client;
+
+type
+  TProdutoModel = class
+  private
+    FAcao: TAcao;
+    FCodigo: integer;
+    FCodigobarra: string;
+    FDescricao: string;
+    FPRECOCOMPRA: Double;
+    FPRECOVENDA: Double;
+    FQTDEESTOQUE: Double;
+    FCATEGORIAPRD: integer;
+    procedure SetAcao(const Value: TAcao);
+    procedure SetCodigo(const Value: integer);
+    procedure SetCodigobarra(const Value: string);
+    procedure SetDescricao(const Value: string);
+    procedure SetPRECOCOMPRA(const Value: Double);
+    procedure SetPRECOVENDA(const Value: Double);
+    procedure SetQTDEESTOQUE(const Value: Double);
+    procedure SetCATEGORIAPRD(const Value: integer);
+  public
+    function Obter(AorderBy: Integer;AValorparcial: string): TFDQuery;
+    function ObterProdDesc(AValorpesquisa: string): TFDQuery;
+    function ObterCodBarra(AValorpesquisa: string): TFDQuery;
+    function MovimentaEstoque(AValor: Double; Operac: string; AId: string): TFDQuery;
+    function Salvar: Boolean;
+    function GetId: Integer;
+
+    property Acao: TAcao read FAcao write SetAcao;
+    property Codigo: integer read FCodigo write SetCodigo;
+    property Codigobarra: string read FCodigobarra write SetCodigobarra;
+    property Descricao: string read FDescricao write SetDescricao;
+    property PRECOCOMPRA: Double read FPRECOCOMPRA write SetPRECOCOMPRA;
+    property PRECOVENDA: Double read FPRECOVENDA write SetPRECOVENDA;
+    property QTDEESTOQUE: Double read FQTDEESTOQUE write SetQTDEESTOQUE;
+    property CATEGORIAPRD: integer read FCATEGORIAPRD write SetCATEGORIAPRD;
+  end;
+
+implementation
+
+{ TProdutoModel }
+
+Uses uProdutoDAO;
+
+function TProdutoModel.GetId: Integer;
+var
+  VProdutoDao: TProdutoDao;
+begin
+  VProdutoDao := TProdutoDao.Create;
+  try
+    Result := VProdutoDao.GetId;
+  finally
+    VProdutoDao.Free;
+  end;
+end;
+
+function TProdutoModel.MovimentaEstoque(AValor: Double; Operac,
+  AId: string): TFDQuery;
+var
+  vProdutoDao: TProdutoDao;
+begin
+  vProdutoDao := TProdutoDao.Create;
+  try
+    Result := vProdutoDao.MovimentaEstoque(AValor,Operac,AId);
+  finally
+    vProdutoDao.Free;
+  end;
+end;
+
+function TProdutoModel.Obter(AorderBy: Integer;AValorparcial: string): TFDQuery;
+var
+  VProdutoDao: TProdutoDao;
+begin
+  VProdutoDao := TProdutoDao.Create;
+  try
+    Result := VProdutoDao.Obter(AorderBy,AValorparcial);
+  finally
+    VProdutoDao.Free;
+  end;
+end;
+
+function TProdutoModel.ObterCodBarra(AValorpesquisa: string): TFDQuery;
+var
+  vProdutoDao: TProdutoDao;
+begin
+  vProdutoDao := TProdutoDao.Create;
+  try
+    Result := vProdutoDao.ObterCodBarra(AValorpesquisa);
+  finally
+    vProdutoDao.Free;
+  end;
+end;
+
+function TProdutoModel.ObterProdDesc(AValorpesquisa: string): TFDQuery;
+var
+  VProdutoDao: TProdutoDao;
+begin
+  VProdutoDao := TProdutoDao.Create;
+  try
+    Result := VProdutoDao.ObterProdDesc(AValorpesquisa);
+  finally
+    VProdutoDao.Free;
+  end;
+end;
+
+function TProdutoModel.Salvar: Boolean;
+var
+  VProdutoDao: TProdutoDao;
+begin
+  Result := False;
+
+  VProdutoDao := TProdutoDao.Create;
+  try
+    case FAcao of
+      uEnumerado.tacIncluir: Result := VProdutoDao.Incluir(Self);
+      uEnumerado.tacAlterar: Result := VProdutoDao.Alterar(Self);
+      uEnumerado.tacExcluir: Result := VProdutoDao.Excluir(Self);
+    end;
+  finally
+    VProdutoDao.Free;
+  end;
+end;
+
+procedure TProdutoModel.SetAcao(const Value: TAcao);
+begin
+  FAcao := Value;
+end;
+
+procedure TProdutoModel.SetCATEGORIAPRD(const Value: integer);
+begin
+   FCATEGORIAPRD := Value;
+end;
+
+procedure TProdutoModel.SetCodigo(const Value: integer);
+begin
+  FCodigo := Value;
+end;
+
+procedure TProdutoModel.SetCodigobarra(const Value: string);
+begin
+  FCodigobarra := Value;
+end;
+
+procedure TProdutoModel.SetDescricao(const Value: string);
+begin
+  FDescricao := Value;
+end;
+
+procedure TProdutoModel.SetPRECOCOMPRA(const Value: Double);
+begin
+  FPRECOCOMPRA := Value;
+end;
+
+procedure TProdutoModel.SetPRECOVENDA(const Value: Double);
+begin
+  FPRECOVENDA := Value;
+end;
+
+procedure TProdutoModel.SetQTDEESTOQUE(const Value: Double);
+begin
+  FQTDEESTOQUE := Value;
+end;
+
+end.

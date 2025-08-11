@@ -1,0 +1,255 @@
+unit ManutencaoFbasprodutosVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ManutencaoFcoesbasicasVIEW, Vcl.DBCtrls,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Data.DB, Datasnap.Provider,
+  Datasnap.DBClient, Vcl.Mask, uProdutoControl, uEnumerado;
+
+type
+  TfrmManutencaoFuncbasProdutos = class(TfrmManutencaoFuncoesbasicas)
+    TB_Produtos: TClientDataSet;
+    TB_ProdutosID: TIntegerField;
+    TB_ProdutosCODIGO_BAR: TStringField;
+    TB_ProdutosDESCRICAO: TStringField;
+    TB_ProdutosPRECO_COMPRA: TFMTBCDField;
+    TB_ProdutosPRECO_VENDA: TFMTBCDField;
+    TB_ProdutosQTD_ESTOQUE: TFMTBCDField;
+    DSP_Produtos: TDataSetProvider;
+    ds_CadProdutos: TDataSource;
+    Label1: TLabel;
+    DBEdtCodigo: TDBEdit;
+    Label11: TLabel;
+    DBEditCodBarra: TDBEdit;
+    Label2: TLabel;
+    DBEdtDescrProduto: TDBEdit;
+    Label3: TLabel;
+    DBEdtPrcCompra: TDBEdit;
+    Label4: TLabel;
+    DBEdtPrcVenda: TDBEdit;
+    Label7: TLabel;
+    DBEdtQtdeEstoque: TDBEdit;
+    pnl_ConsFiltro: TPanel;
+    Label5: TLabel;
+    cbo_SelecCampo: TComboBox;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    cbo_SelecFiltro: TComboBox;
+    Label10: TLabel;
+    Edt_Valor: TEdit;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btn_SairClick(Sender: TObject);
+    procedure DBEditCodBarraKeyPress(Sender: TObject; var Key: Char);
+    procedure DBEditCodBarraExit(Sender: TObject);
+    procedure btn_SalvarClick(Sender: TObject);
+    procedure btn_RestaurarClick(Sender: TObject);
+  private
+    { Private declarations }
+    Produtos: TProdutoControl;
+    ATipo: TAcao;
+  public
+    { Public declarations }
+    sAcao: String; //Insert, Edit, Delete
+    procedure ConfiguraBotoes(bNavDados, bRestaurar, bSalvar, bSair: boolean);
+    procedure ConfiguraCampos;
+  end;
+
+var
+  frmManutencaoFuncbasProdutos: TfrmManutencaoFuncbasProdutos;
+
+implementation
+
+{$R *.dfm}
+
+uses uConsultaFuncbasprodutosVIEW;
+
+procedure TfrmManutencaoFuncbasProdutos.btn_RestaurarClick(Sender: TObject);
+begin
+  inherited;
+  if TB_Produtos.State = dsEdit then
+    TB_Produtos.Cancel
+  else
+    Close;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.btn_SairClick(Sender: TObject);
+begin
+  inherited;
+  sAcao := '';
+  ConfiguraCampos;
+  TB_Produtos.Close;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.btn_SalvarClick(Sender: TObject);
+begin
+  inherited;
+  if sAcao = 'Insert' then  //grava no banco as inserções ou alterações
+    begin
+      ATipo := uEnumerado.tacIncluir;
+      try
+        Produtos:= TProdutoControl.Create;
+        Produtos.ProdutoModel.Acao        := ATipo;
+        TB_ProdutosID.AsInteger           := Produtos.ProdutoModel.GetId;
+        Produtos.ProdutoModel.Codigo      := TB_ProdutosID.AsInteger; //gera codigo automático
+        Produtos.ProdutoModel.Codigobarra := TB_ProdutosCODIGO_BAR.AsString;
+        Produtos.ProdutoModel.Descricao   := TB_ProdutosDESCRICAO.AsString;
+        Produtos.ProdutoModel.PRECOCOMPRA := TB_ProdutosPRECO_COMPRA.AsCurrency;
+        Produtos.ProdutoModel.PRECOVENDA  := TB_ProdutosPRECO_VENDA.AsCurrency;
+        Produtos.ProdutoModel.QTDEESTOQUE := TB_ProdutosQTD_ESTOQUE.AsCurrency;
+        Produtos.Salvar;
+      finally
+        messagedlg('Dados gravados com sucesso!',mtinformation,[mbok],0);
+        frmConsFuncProdutos.btn_Todos.Click;
+        TB_Produtos.Close;
+        TB_Produtos.CreateDataSet;
+        TB_Produtos.Insert;
+        Produtos.Free;
+      end;
+    end
+    else
+    if sAcao = 'Edit' then
+    begin
+      ATipo := uEnumerado.tacAlterar;
+      try
+        Produtos:= TProdutoControl.Create;
+        Produtos.ProdutoModel.Acao        := ATipo;
+        Produtos.ProdutoModel.Codigo      := TB_ProdutosID.AsInteger; //gera codigo automático
+        Produtos.ProdutoModel.Codigobarra := TB_ProdutosCODIGO_BAR.AsString;
+        Produtos.ProdutoModel.Descricao   := TB_ProdutosDESCRICAO.AsString;
+        Produtos.ProdutoModel.PRECOCOMPRA := TB_ProdutosPRECO_COMPRA.AsCurrency;
+        Produtos.ProdutoModel.PRECOVENDA  := TB_ProdutosPRECO_VENDA.AsCurrency;
+        Produtos.ProdutoModel.QTDEESTOQUE := TB_ProdutosQTD_ESTOQUE.AsCurrency;
+        Produtos.Salvar;
+      finally
+        messagedlg('Dados gravados com sucesso!',mtinformation,[mbok],0);
+        frmConsFuncProdutos.btn_Todos.Click;
+        TB_Produtos.Close;
+        TB_Produtos.CreateDataSet;
+        Produtos.Free;
+      end;
+    end
+    else
+    if sAcao = 'Delete' then
+    begin
+      ATipo := uEnumerado.tacExcluir;
+      if MessageDlg('Deseja realmente exluir essa informação ?',mtConfirmation, [mbYes,mbNo],1) = mrYes then
+      begin
+        try
+          Produtos:= TProdutoControl.Create;
+          Produtos.ProdutoModel.Acao        := ATipo;
+          Produtos.ProdutoModel.Codigo      := TB_ProdutosID.AsInteger;
+          Produtos.Salvar;
+        finally
+          messagedlg('Dado Excluido com sucesso!',mtinformation,[mbok],0);
+          frmConsFuncProdutos.btn_Todos.Click;
+          TB_Produtos.Close;
+          TB_Produtos.CreateDataSet;
+          Produtos.Free;
+        end;
+      end;
+    end
+    else
+    if sAcao = 'Filtrar' then
+    begin
+      if cbo_SelecFiltro.ItemIndex = -1 then
+      begin
+        messagedlg('Filtro não selecionado!',mtinformation,[mbok],0);
+        exit;
+      end;
+
+      if cbo_SelecCampo.ItemIndex = -1 then
+      begin
+        messagedlg('Campo não selecionado!',mtinformation,[mbok],0);
+        exit;
+      end;
+
+      if Trim(Edt_Valor.Text) = '' then
+      begin
+        messagedlg('Valor não pode ser Vazio!',mtinformation,[mbok],0);
+        exit;
+      end;
+
+      try
+        TB_Produtos.Close;
+        Produtos:= TProdutoControl.Create;
+        frmConsFuncProdutos.DSP_Produtos.DataSet := Produtos.ObterComFiltro
+                                                    (
+                                                      cbo_SelecFiltro.ItemIndex,
+                                                      cbo_SelecCampo.Text,
+                                                      trim(Edt_Valor.Text)
+                                                    );
+        frmConsFuncProdutos.TB_Produtos.close;
+        frmConsFuncProdutos.TB_Produtos.Open;
+      finally
+        Produtos.Free;
+      end;
+    end;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.ConfiguraBotoes(bNavDados,
+  bRestaurar, bSalvar, bSair: boolean);
+begin
+  dbn_Dados.Enabled     := bNavDados;
+  btn_Restaurar.Enabled := bRestaurar;
+  btn_Salvar.Enabled    := bSalvar;
+  btn_Sair.Enabled      := bSair;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.ConfiguraCampos;
+begin
+  if sAcao = 'Consultar' then
+  begin
+    DBEdtCodigo.DataSource       := frmConsFuncProdutos.ds_CadProdutos;
+    DBEditCodBarra.DataSource    := frmConsFuncProdutos.ds_CadProdutos;
+    DBEdtDescrProduto.DataSource := frmConsFuncProdutos.ds_CadProdutos;
+    DBEdtPrcCompra.DataSource    := frmConsFuncProdutos.ds_CadProdutos;
+    DBEdtPrcVenda.DataSource     := frmConsFuncProdutos.ds_CadProdutos;
+    DBEdtQtdeEstoque.DataSource  := frmConsFuncProdutos.ds_CadProdutos;
+    dbn_Dados.DataSource         := frmConsFuncProdutos.ds_CadProdutos;
+  end
+  else
+  begin
+    DBEdtCodigo.DataSource       := ds_CadProdutos;
+    DBEditCodBarra.DataSource    := ds_CadProdutos;
+    DBEdtDescrProduto.DataSource := ds_CadProdutos;
+    DBEdtPrcCompra.DataSource    := ds_CadProdutos;
+    DBEdtPrcVenda.DataSource     := ds_CadProdutos;
+    DBEdtQtdeEstoque.DataSource  := ds_CadProdutos;
+    dbn_Dados.DataSource         := ds_CadProdutos;
+  end;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.DBEditCodBarraExit(Sender: TObject);
+begin
+  inherited;
+  if TB_Produtos.State in [dsInsert, dsEdit] then
+  begin
+    if TB_ProdutosCODIGO_BAR.AsString <> '' then
+    begin
+      TB_ProdutosCODIGO_BAR.AsString := FormatFloat('0000000000000', TB_ProdutosCODIGO_BAR.AsInteger);
+    end;
+  end;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.DBEditCodBarraKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if not (Key in ['0'..'9', #8, #13, #27]) then
+    Key := #0;
+end;
+
+procedure TfrmManutencaoFuncbasProdutos.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if key = VK_ESCAPE then
+    close;
+  if Key = VK_RETURN then
+   perform(WM_NEXTDLGCTL,0,0);
+end;
+
+end.

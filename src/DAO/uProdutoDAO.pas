@@ -1,0 +1,172 @@
+unit uProdutoDAO;
+
+interface
+
+uses
+  FireDAC.Comp.Client, uConexao, uProdutoModel, System.SysUtils, uSistemaControl;
+
+type
+  TProdutoDAO = class
+  private
+    FConexao: TConexao;
+  public
+    constructor Create;
+
+    function Incluir(AProdutoModel: TProdutoModel): Boolean;
+    function Alterar(AProdutoModel: TProdutoModel): Boolean;
+    function Excluir(AProdutoModel: TProdutoModel): Boolean;
+    function GetId: Integer;
+    function Obter(AorderBy: Integer;AValorparcial: string): TFDQuery;
+    function ObterComFiltro(AIndice: Integer; ACampo: string; AValorpesquisa: string): TFDQuery;
+    function MovimentaEstoque(AValor: Double; Operac: string; AId: string): TFDQuery;
+
+  end;
+
+implementation
+
+{ TProdutoDAO }
+
+constructor TProdutoDAO.Create;
+begin
+  FConexao := TSistemaControl.GetInstance().Conexao;
+end;
+
+function TProdutoDAO.GetId: Integer;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  try
+    vQry.Open('SELECT coalesce(MAX(ID),0)+1 AS ID FROM TB_PRODUTOS');
+    try
+      Result := vQry.Fields[0].AsInteger;
+    finally
+      vQry.Close;
+    end;
+  finally
+    vQry.Free;
+  end;
+end;
+
+function TProdutoDAO.Incluir(AProdutoModel: TProdutoModel): Boolean;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  try
+    vQry.ExecSQL('insert into TB_PRODUTOS (ID, CODIGO_BAR, DESCRICAO, PRECO_COMPRA, PRECO_VENDA, QTD_ESTOQUE) values (:ID, :CODIGO_BAR, :DESCRICAO, :PRECO_COMPRA, :PRECO_VENDA, :QTD_ESTOQUE)',
+                  [AProdutoModel.Codigo, AProdutoModel.Codigobarra, AProdutoModel.Descricao, AProdutoModel.PRECOCOMPRA, AProdutoModel.PRECOVENDA, AProdutoModel.QTDEESTOQUE]);
+
+    vQry.Connection.Commit;
+    vQry.Connection.CommitRetaining;
+    Result := True;
+  finally
+    vQry.Free;
+  end;
+end;
+
+function TProdutoDAO.MovimentaEstoque(AValor: Double; Operac: string; AId: string): TFDQuery;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  try
+    vQry.Close;
+    if Operac = '+' then
+    begin
+      vQry.ExecSQL('update TB_PRODUTOS set QTD_ESTOQUE=QTD_ESTOQUE+:QTD_ESTOQUE where ID =:ID',
+                   [AValor, AId]);
+    end
+    else
+    begin
+      vQry.ExecSQL('update TB_PRODUTOS set QTD_ESTOQUE=QTD_ESTOQUE-:QTD_ESTOQUE where ID =:ID',
+               [AValor, AId]);
+    end;
+
+    vQry.Connection.Commit;
+    vQry.Connection.CommitRetaining;
+    Result := vQry;
+  finally
+    VQry.Free;
+  end;
+end;
+
+function TProdutoDAO.Obter(AorderBy: Integer;AValorparcial: string): TFDQuery;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  vQry.Open('select ID,                                                           '+
+            '       CODIGO_BAR,                                                   '+
+            '       DESCRICAO,                                                    '+
+            '       PRECO_COMPRA,                                                 '+
+            '       PRECO_VENDA,                                                  '+
+            '       QTD_ESTOQUE                                                   '+
+            'from TB_PRODUTOS order by ' + AorderBy.ToString);
+  Result := vQry;
+end;
+
+function TProdutoDAO.ObterComFiltro(AIndice: Integer; ACampo,
+  AValorpesquisa: string): TFDQuery;
+var
+  vQry: TFDQuery;
+  sSql: string;
+begin
+  vQry := FConexao.CriarQuery();
+  sSql := '';
+  sSql := sSql + 'select ID,                           '+
+                 '       CODIGO_BAR,                   '+
+                 '       DESCRICAO,                    '+
+                 '       PRECO_COMPRA,                 '+
+                 '       PRECO_VENDA,                  '+
+                 '       QTD_ESTOQUE                   '+
+                 'from TB_PRODUTOS WHERE '+ ACampo + ' ';
+
+  case AIndice of
+    0: sSql := sSql + '> '+ QuotedStr(AValorpesquisa);
+    1: sSql := sSql + '< '+ QuotedStr(AValorpesquisa);
+    2: sSql := sSql + '= '+ QuotedStr(AValorpesquisa);
+    3: sSql := sSql + '>= '+ QuotedStr(AValorpesquisa);
+    4: sSql := sSql + '<= '+ QuotedStr(AValorpesquisa);
+    5: sSql := sSql + 'LIKE ' + QuotedStr(AValorpesquisa + '%');
+    6: sSql := sSql + 'LIKE ' + QuotedStr('%' + AValorpesquisa);
+    7: sSql := sSql + 'LIKE ' + QuotedStr('%' + AValorpesquisa + '%');
+  end;
+
+  vQry.SQL.Add(sSql);
+  vQry.Open();
+
+  Result := vQry;
+end;
+
+function TProdutoDAO.Alterar(AProdutoModel: TProdutoModel): Boolean;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  try
+    vQry.Close;
+    vQry.ExecSQL('update TB_PRODUTOS set CODIGO_BAR =:CODIGO_BAR, DESCRICAO =:DESCRICAO, PRECO_COMPRA=:PRECO_COMPRA, PRECO_VENDA=:PRECO_VENDA, QTD_ESTOQUE=:QTD_ESTOQUE where ID =:ID',
+                 [AProdutoModel.Codigobarra, AProdutoModel.DESCRICAO, AProdutoModel.PRECOCOMPRA ,AProdutoModel.PRECOVENDA, AProdutoModel.QTDEESTOQUE ,AProdutoModel.codigo]);
+
+    Result := True;
+  finally
+    vQry.Free;
+  end;
+end;
+
+function TProdutoDAO.Excluir(AProdutoModel: TProdutoModel): Boolean;
+var
+  vQry: TFDQuery;
+begin
+  vQry := FConexao.CriarQuery();
+  try
+    vQry.ExecSQL('delete from TB_PRODUTOS where ID =:ID',
+                  [AProdutoModel.Codigo]);
+    Result := True;
+  finally
+    vQry.Free;
+  end;
+end;
+
+end.

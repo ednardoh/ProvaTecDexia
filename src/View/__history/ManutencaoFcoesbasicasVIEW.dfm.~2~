@@ -1,0 +1,19 @@
+object frmManutencaoFuncoesbasicas: TfrmManutencaoFuncoesbasicas
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Manuten'#231#227'o - Fun'#231#245'es b'#225'sicas'
+  ClientHeight = 341
+  ClientWidth = 833
+  Color = 16761992
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+end

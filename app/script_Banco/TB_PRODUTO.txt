@@ -1,0 +1,10 @@
+ID;CODIGO_BAR;DESCRICAO;PRECO_COMPRA;PRECO_VENDA;QTD_ESTOQUE
+1;0000000255789;Smart TV LED 43" Ultra HD 4K LG;1100,00;1849,00;1500,00
+2;0000000789542;Projetor Interestelar Hy300 Mini;198,00;224,90;500,00
+3;0000079892354;Apple iPhone 14 (512 GB) - (PRODUCT)RED;5100,00;7399,00;600,00
+4;0000002587144;Ventilador Bvt400 Maxx Force 2 Em 1 150w Preto Britânia;125,00;149,00;300,00
+5;0000002255569;Tênis Masculino New Balance Corrida Rua Alta Performance;215,00;390,00;1500,00
+6;0000002255846;Mala De Bordo 10kg Pequena De Mão Com Rodinhas Bloguerinha;205,00;239,00;800,00
+7;0000005566598;Mala De Viagem 10kg Super Promoção Rodas 360°;110,00;231,00;500,00
+8;0000000622598;Bolsa Mala Bordo De Mão 10 Kg Feminina Bordo Viagem Academia;15,00;43,90;600,00
+9;0000052233214;Mala De Bordo Feminina 10kg Grande Bolsa Viagem Couro;95,00;111,93;1000,00

@@ -1,0 +1,49 @@
+unit uRelVendasVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.Provider, Datasnap.DBClient;
+
+type
+  TfrmRelatorioDeVendas = class(TForm)
+    pnl_Top: TPanel;
+    btn_Consultar: TBitBtn;
+    BitBtn2: TBitBtn;
+    btn_Sair: TBitBtn;
+    Panel1: TPanel;
+    TB_Vendas: TClientDataSet;
+    TB_VendasID_VENDA: TIntegerField;
+    TB_VendasNUM_VENDA: TIntegerField;
+    TB_VendasID_PRODUTO: TIntegerField;
+    TB_VendasPRODUTO: TStringField;
+    TB_VendasDATA_VENDA: TSQLTimeStampField;
+    TB_VendasQUANTIDADE: TIntegerField;
+    TB_VendasVALOR_UNITARIO: TFMTBCDField;
+    TB_VendasVALOR_TOTAL: TFMTBCDField;
+    DSP_Vendas: TDataSetProvider;
+    ds_CadVendas: TDataSource;
+    DBG_ConsVenda: TDBGrid;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRelatorioDeVendas: TfrmRelatorioDeVendas;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmRelatorioDeVendas.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := Cafree;
+end;
+
+end.

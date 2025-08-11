@@ -1,0 +1,29 @@
+unit ManutencaoFcoesbasicasVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TfrmManutencaoFuncoesbasicas = class(TForm)
+    pnl_Client: TPanel;
+    pnl_Right: TPanel;
+    btn_Filtrar: TBitBtn;
+    btn_Todos: TBitBtn;
+    btn_Sair: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmManutencaoFuncoesbasicas: TfrmManutencaoFuncoesbasicas;
+
+implementation
+
+{$R *.dfm}
+
+end.

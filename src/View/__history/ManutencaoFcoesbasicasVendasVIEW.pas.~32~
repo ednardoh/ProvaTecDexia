@@ -1,0 +1,310 @@
+unit ManutencaoFcoesbasicasVendasVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ManutencaoFcoesbasicasVIEW, Vcl.DBCtrls,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Data.DB, Datasnap.Provider,
+  Datasnap.DBClient, uVendasControl, uEnumerado, uProdutoControl, Vcl.Mask,
+  Vcl.ComCtrls;
+
+type
+  TfrmManutencaoFuncoesbasicasVendas = class(TfrmManutencaoFuncoesbasicas)
+    TB_Vendas: TClientDataSet;
+    TB_VendasID_VENDA: TIntegerField;
+    TB_VendasID_PRODUTO: TIntegerField;
+    TB_VendasNUM_VENDA: TIntegerField;
+    TB_VendasDATA_VENDA: TSQLTimeStampField;
+    TB_VendasQUANTIDADE: TIntegerField;
+    TB_VendasVALOR_UNITARIO: TFMTBCDField;
+    TB_VendasVALOR_TOTAL: TFMTBCDField;
+    DSP_Vendas: TDataSetProvider;
+    ds_CadVendas: TDataSource;
+    Label1: TLabel;
+    DBE_ID_Venda: TDBEdit;
+    Label2: TLabel;
+    DBL_Produto: TDBLookupComboBox;
+    TB_Produtos: TClientDataSet;
+    TB_ProdutosID: TIntegerField;
+    TB_ProdutosCODIGO_BAR: TStringField;
+    TB_ProdutosDESCRICAO: TStringField;
+    TB_ProdutosPRECO_COMPRA: TFMTBCDField;
+    TB_ProdutosPRECO_VENDA: TFMTBCDField;
+    TB_ProdutosQTD_ESTOQUE: TFMTBCDField;
+    DSP_Produtos: TDataSetProvider;
+    ds_CadProdutos: TDataSource;
+    Label3: TLabel;
+    DBE_Num_Venda: TDBEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    DBE_QTDE: TDBEdit;
+    DBE_Valunit: TDBEdit;
+    DBE_ValorTot: TDBEdit;
+    DTE_Dt_Venda: TDateTimePicker;
+    pnl_ConsFiltro: TPanel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    cbo_SelecCampo: TComboBox;
+    cbo_SelecFiltro: TComboBox;
+    Edt_Valor: TEdit;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure DBL_ProdutoExit(Sender: TObject);
+    procedure DBE_QTDEExit(Sender: TObject);
+    procedure DBE_Num_VendaExit(Sender: TObject);
+    procedure DTE_Dt_VendaExit(Sender: TObject);
+    procedure btn_SalvarClick(Sender: TObject);
+    procedure btn_RestaurarClick(Sender: TObject);
+  private
+    { Private declarations }
+    Vendas: TVendasControl;
+    Produtos: TProdutoControl;
+    ATipo: TAcao;
+    procedure ConsultaTodosProdutos;
+  public
+    { Public declarations }
+    sAcao: String; //Insert, Edit, Delete
+    procedure ConfiguraBotoes(bNavDados, bRestaurar, bSalvar, bSair: boolean);
+    procedure ConfiguraCampos;
+  end;
+
+var
+  frmManutencaoFuncoesbasicasVendas: TfrmManutencaoFuncoesbasicasVendas;
+
+implementation
+
+{$R *.dfm}
+
+uses uConsultaFuncoesbasicasVendasVIEW;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.btn_RestaurarClick(
+  Sender: TObject);
+begin
+  inherited;
+  if TB_Vendas.State = dsEdit then
+    TB_Vendas.Cancel
+  else
+    Close;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.btn_SalvarClick(Sender: TObject);
+begin
+  inherited;
+  if sAcao = 'Insert' then  //grava no banco as inserções ou alterações
+  begin
+    ATipo := uEnumerado.tacIncluir;
+    try
+      Vendas:= TVendasControl.Create;
+      Vendas.VendasModel.Acao           := ATipo;
+      TB_VendasID_VENDA.AsInteger       := Vendas.VendasModel.GetId; //gera codigo automático
+      Vendas.VendasModel.ID             := TB_VendasID_VENDA.AsInteger;
+      Vendas.VendasModel.CODPRODUTO     := TB_VendasID_PRODUTO.AsString;
+      Vendas.VendasModel.NUMVENDA       := TB_VendasNUM_VENDA.AsInteger;
+      Vendas.VendasModel.DATAVENDA      := TB_VendasDATA_VENDA.AsDateTime;
+      Vendas.VendasModel.QUANTIDADE     := TB_VendasQUANTIDADE.AsFloat;
+      Vendas.VendasModel.VALORUNITARIO  := TB_VendasVALOR_UNITARIO.AsFloat;
+      Vendas.VendasModel.VALORTOTAL     := TB_VendasVALOR_TOTAL.AsFloat;
+      Vendas.Salvar;
+    finally
+      messagedlg('Dados gravados com sucesso!',mtinformation,[mbok],0);
+      frmConsultaFuncoesbasicasVendas.btnTodos.Click;
+      TB_Vendas.Close;
+      TB_Vendas.CreateDataSet;
+      TB_Vendas.Insert;
+      Vendas.Free;
+    end;
+  end
+  else
+  if sAcao = 'Edit' then
+  begin
+    ATipo := uEnumerado.tacAlterar;
+    try
+      Vendas:= TVendasControl.Create;
+      Vendas.VendasModel.Acao           := ATipo;
+      Vendas.VendasModel.ID             := TB_VendasID_VENDA.AsInteger;
+      Vendas.VendasModel.CODPRODUTO     := TB_VendasID_PRODUTO.AsString;
+      Vendas.VendasModel.NUMVENDA       := TB_VendasNUM_VENDA.AsInteger;
+      Vendas.VendasModel.DATAVENDA      := TB_VendasDATA_VENDA.AsDateTime;
+      Vendas.VendasModel.QUANTIDADE     := TB_VendasQUANTIDADE.AsFloat;
+      Vendas.VendasModel.VALORUNITARIO  := TB_VendasVALOR_UNITARIO.AsFloat;
+      Vendas.VendasModel.VALORTOTAL     := TB_VendasVALOR_TOTAL.AsFloat;
+      Vendas.Salvar;
+    finally
+      messagedlg('Dados gravados com sucesso!',mtinformation,[mbok],0);
+      frmConsultaFuncoesbasicasVendas.btnTodos.Click;
+      TB_Vendas.Close;
+      TB_Vendas.CreateDataSet;
+      TB_Vendas.Insert;
+      Vendas.Free;
+    end;
+  end
+  else
+  if sAcao = 'Delete' then
+  begin
+    ATipo := uEnumerado.tacExcluir;
+    if MessageDlg('Deseja realmente exluir essa informação ?',mtConfirmation, [mbYes,mbNo],1) = mrYes then
+    begin
+      try
+        Vendas:= TVendasControl.Create;
+        Vendas.VendasModel.Acao        := ATipo;
+        Vendas.VendasModel.ID          := TB_VendasID_VENDA.AsInteger;
+        Vendas.VendasModel.CODPRODUTO  := TB_VendasID_PRODUTO.AsString;
+        Vendas.Salvar;
+      finally
+        messagedlg('Dado Excluido com sucesso!',mtinformation,[mbok],0);
+        frmConsultaFuncoesbasicasVendas.btnTodos.Click;
+        TB_Vendas.Close;
+        TB_Vendas.CreateDataSet;
+        TB_Vendas.Free;
+      end;
+    end;
+  end
+  else
+  if sAcao = 'Filtrar' then
+  begin
+    if cbo_SelecFiltro.ItemIndex = -1 then
+    begin
+      messagedlg('Filtro não selecionado!',mtinformation,[mbok],0);
+      exit;
+    end;
+
+    if cbo_SelecCampo.ItemIndex = -1 then
+    begin
+      messagedlg('Campo não selecionado!',mtinformation,[mbok],0);
+      exit;
+    end;
+
+    if Trim(Edt_Valor.Text) = '' then
+    begin
+      messagedlg('Valor não pode ser Vazio!',mtinformation,[mbok],0);
+      exit;
+    end;
+
+    try
+      TB_Vendas.Close;
+      Vendas:= TVendasControl.Create;
+      frmConsultaFuncoesbasicasVendas.DSP_Vendas.DataSet := Vendas.ObterComFiltro
+                                                  (
+                                                    cbo_SelecFiltro.ItemIndex,
+                                                    trim(cbo_SelecCampo.Text),
+                                                    trim(Edt_Valor.Text)
+                                                  );
+      frmConsultaFuncoesbasicasVendas.TB_Vendas.close;
+      frmConsultaFuncoesbasicasVendas.TB_Vendas.Open;
+    finally
+      Vendas.Free;
+    end;
+  end;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.ConfiguraBotoes(bNavDados,
+  bRestaurar, bSalvar, bSair: boolean);
+begin
+  dbn_Dados.Enabled     := bNavDados;
+  btn_Restaurar.Enabled := bRestaurar;
+  btn_Salvar.Enabled    := bSalvar;
+  btn_Sair.Enabled      := bSair;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.ConfiguraCampos;
+begin
+  if sAcao = 'Consultar' then
+  begin
+    DBE_ID_Venda.DataSource      := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    DBL_Produto.DataSource       := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    DBE_Num_Venda.DataSource     := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    DBE_QTDE.DataSource          := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    DBE_Valunit.DataSource       := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    DBE_ValorTot.DataSource      := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+    dbn_Dados.DataSource         := frmConsultaFuncoesbasicasVendas.ds_CadVendas;
+  end
+  else
+  begin
+    DBE_ID_Venda.DataSource      := ds_CadVendas;
+    DBL_Produto.DataSource       := ds_CadVendas;
+    DBE_Num_Venda.DataSource     := ds_CadVendas;
+    DBE_QTDE.DataSource          := ds_CadVendas;
+    DBE_Valunit.DataSource       := ds_CadVendas;
+    DBE_ValorTot.DataSource      := ds_CadVendas;
+    dbn_Dados.DataSource         := ds_CadVendas;
+  end;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.ConsultaTodosProdutos;
+begin
+  try
+    TB_Produtos.Close;
+    Produtos:= TProdutoControl.Create;
+    DSP_Produtos.DataSet := Produtos.Obter(1,'');
+    TB_Produtos.close;
+    TB_Produtos.Open;
+  finally
+    Produtos.Free;
+  end;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.DBE_Num_VendaExit(Sender: TObject);
+begin
+  inherited;
+  DTE_Dt_Venda.SetFocus;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.DBE_QTDEExit(Sender: TObject);
+begin
+  inherited;
+  if TB_VendasQUANTIDADE.AsFloat = 0 then
+  begin
+    messagedlg('Quantidade não pode ser zero!',mtError,[mbok],0);
+    TB_VendasQUANTIDADE.FocusControl;
+    exit;
+  end;
+  if TB_Vendas.State in [dsEdit, dsInsert] then
+  begin
+    TB_VendasVALOR_TOTAL.AsFloat := TB_ProdutosPRECO_VENDA.AsFloat * TB_VendasQUANTIDADE.AsFloat;
+  end;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.DBL_ProdutoExit(Sender: TObject);
+begin
+  inherited;
+  if TB_Vendas.State in [dsEdit, dsInsert] then
+  begin
+    TB_VendasVALOR_UNITARIO.AsFloat := TB_ProdutosPRECO_VENDA.AsFloat;
+  end;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.DTE_Dt_VendaExit(Sender: TObject);
+begin
+  inherited;
+  if TB_Vendas.State in [dsEdit, dsInsert] then
+  begin
+    TB_VendasDATA_VENDA.AsDateTime := DTE_Dt_Venda.DateTime;
+    DBE_QTDE.SetFocus;
+  end
+  else
+    DBE_QTDE.SetFocus;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  ConsultaTodosProdutos;
+end;
+
+procedure TfrmManutencaoFuncoesbasicasVendas.FormKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if key = VK_ESCAPE then
+    close;
+  if Key = VK_RETURN then
+   perform(WM_NEXTDLGCTL,0,0);
+end;
+
+end.

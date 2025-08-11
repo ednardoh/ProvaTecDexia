@@ -1,0 +1,16 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Manuten'#231#227'o - Fun'#231#245'es b'#225'sicas'
+  ClientHeight = 331
+  ClientWidth = 823
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+end

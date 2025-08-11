@@ -1,0 +1,63 @@
+unit uVendasControl;
+
+interface
+
+uses
+  uVendasModel, System.SysUtils, FireDAC.Comp.Client;
+
+type
+  TVendasControl = class
+    private
+      FVendasModel: TVendasModel;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function Salvar: Boolean;
+      function Obter(AValorpesquisa: string): TFDQuery;
+      function ObterComFiltro(AIndice: Integer; ACampo: string; AValorpesquisa: string): TFDQuery;
+      function GetId: Integer;
+
+      property VendasModel: TVendasModel read FVendasModel write FVendasModel;
+
+  end;
+
+
+implementation
+
+{ TPedidoXProdutosControl }
+
+constructor TVendasControl.Create;
+begin
+  FVendasModel:= TVendasModel.Create;
+end;
+
+destructor TVendasControl.Destroy;
+begin
+  FVendasModel.Free;
+  inherited;
+end;
+
+function TVendasControl.GetId: Integer;
+begin
+  Result := FVendasModel.GetId;
+end;
+
+function TVendasControl.Obter(AValorpesquisa: string): TFDQuery;
+begin
+  Result := FVendasModel.Obter(AValorpesquisa);
+end;
+
+function TVendasControl.ObterComFiltro(AIndice: Integer; ACampo,
+  AValorpesquisa: string): TFDQuery;
+begin
+  Result := FVendasModel.ObterComFiltro(AIndice, ACampo, AValorpesquisa);
+end;
+
+function TVendasControl.Salvar: Boolean;
+begin
+  Result := FVendasModel.Salvar;
+end;
+
+end.

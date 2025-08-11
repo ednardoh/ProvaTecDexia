@@ -1,0 +1,50 @@
+unit uConsultaFuncoesbasicasVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  System.ImageList, Vcl.ImgList, Vcl.ToolWin, Vcl.ActnMan, Vcl.ActnCtrls,
+  Vcl.ComCtrls, VCLTee.TeCanvas, VCLTee.TeePenDlg;
+
+type
+  TfrmConsultaFuncoesbasicas = class(TForm)
+    pnl_Client: TPanel;
+    pnl_Right: TPanel;
+    btn_Filtrar: TBitBtn;
+    btn_Todos: TBitBtn;
+    btn_Incluir: TBitBtn;
+    btn_Alterar: TBitBtn;
+    btn_Excluir: TBitBtn;
+    btn_Consultar: TBitBtn;
+    btn_Sair: TBitBtn;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btn_SairClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConsultaFuncoesbasicas: TfrmConsultaFuncoesbasicas;
+
+implementation
+
+{$R *.dfm}
+
+uses ManutencaoFcoesbasicasVIEW;
+
+procedure TfrmConsultaFuncoesbasicas.btn_SairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmConsultaFuncoesbasicas.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := cafree;
+end;
+
+end.

@@ -1,0 +1,141 @@
+inherited frmConsFuncProdutos: TfrmConsFuncProdutos
+  Caption = 'Consultas e Fun'#231#245'es b'#225'sicas - Produtos'
+  OnCreate = FormCreate
+  ExplicitLeft = -168
+  ExplicitTop = -63
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnl_Client: TPanel
+    object DBG_ConsProd: TDBGrid
+      Left = 0
+      Top = 0
+      Width = 656
+      Height = 563
+      Align = alClient
+      DataSource = ds_CadProdutos
+      Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+  end
+  inherited pnl_Right: TPanel
+    inherited btnFiltrar: TBitBtn
+      OnClick = btnFiltrarClick
+    end
+  end
+  object TB_Produtos: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'CODIGO_BAR'
+        DataType = ftString
+        Size = 13
+      end
+      item
+        Name = 'DESCRICAO'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'PRECO_COMPRA'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'PRECO_VENDA'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'QTD_ESTOQUE'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'CATEGORIAPRD'
+        DataType = ftInteger
+      end
+      item
+        Name = 'DESCRCATEGORIAPRD'
+        Attributes = [faReadonly, faFixed]
+        DataType = ftString
+        Size = 26
+      end>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'DSP_Produtos'
+    StoreDefs = True
+    Left = 704
+    Top = 352
+    object TB_ProdutosID: TIntegerField
+      DisplayWidth = 5
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object TB_ProdutosCODIGO_BAR: TStringField
+      DisplayLabel = 'C'#243'digo de Barra'
+      DisplayWidth = 18
+      FieldName = 'CODIGO_BAR'
+      Origin = 'CODIGO_BAR'
+      Size = 13
+    end
+    object TB_ProdutosDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o do Produto'
+      DisplayWidth = 67
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 60
+    end
+    object TB_ProdutosPRECO_COMPRA: TFMTBCDField
+      DisplayLabel = 'Pre'#231'o de Compra'
+      DisplayWidth = 14
+      FieldName = 'PRECO_COMPRA'
+      Origin = 'PRECO_COMPRA'
+      DisplayFormat = ',0.00'
+      EditFormat = ',0.00'
+      Precision = 18
+      Size = 2
+    end
+    object TB_ProdutosPRECO_VENDA: TFMTBCDField
+      DisplayLabel = 'Pre'#231'o de Venda'
+      DisplayWidth = 13
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      DisplayFormat = ',0.00'
+      EditFormat = ',0.00'
+      Precision = 18
+      Size = 2
+    end
+    object TB_ProdutosQTD_ESTOQUE: TFMTBCDField
+      DisplayLabel = 'Qtde. em Estoque'
+      DisplayWidth = 15
+      FieldName = 'QTD_ESTOQUE'
+      Origin = 'QTD_ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object ds_CadProdutos: TDataSource
+    DataSet = TB_Produtos
+    Left = 704
+    Top = 448
+  end
+  object DSP_Produtos: TDataSetProvider
+    Left = 704
+    Top = 400
+  end
+end

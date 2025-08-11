@@ -1,0 +1,29 @@
+program Vendas;
+
+uses
+  Vcl.Forms,
+  uPrincipalVIEW in 'View\uPrincipalVIEW.pas' {frmPrincipal},
+  UConecta in 'Conexao\UConecta.pas',
+  uConexao in 'Conexao\uConexao.pas',
+  UConexaoBDpas in 'Conexao\UConexaoBDpas.pas' {frmConectaDB},
+  uSistemaControl in 'Controller\uSistemaControl.pas',
+  uEnumerado in 'Model\uEnumerado.pas',
+  uProdutoModel in 'Model\uProdutoModel.pas',
+  uProdutoDAO in 'DAO\uProdutoDAO.pas',
+  uProdutoControl in 'Controller\uProdutoControl.pas',
+  uConsultaFuncoesbasicasVIEW in 'View\uConsultaFuncoesbasicasVIEW.pas' {frmConsultaFuncoesbasicas},
+  ManutencaoFcoesbasicasVIEW in 'View\ManutencaoFcoesbasicasVIEW.pas' {frmManutencaoFuncoesbasicas},
+  ManutencaoFbasprodutosVIEW in 'View\ManutencaoFbasprodutosVIEW.pas' {frmManutencaoFuncbasProdutos},
+  uConsultaFuncbasprodutosVIEW in 'View\uConsultaFuncbasprodutosVIEW.pas' {frmConsFuncProdutos},
+  uVendasModel in 'Model\uVendasModel.pas',
+  uVendasDAO in 'DAO\uVendasDAO.pas',
+  uVendasControl in 'Controller\uVendasControl.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.Run;
+end.

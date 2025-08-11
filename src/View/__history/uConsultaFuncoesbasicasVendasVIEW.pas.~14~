@@ -1,0 +1,118 @@
+unit uConsultaFuncoesbasicasVendasVIEW;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uConsultaFuncoesbasicasVIEW,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Datasnap.Provider, Datasnap.DBClient, uVendasControl, uEnumerado;
+
+type
+  TfrmConsultaFuncoesbasicasVendas = class(TfrmConsultaFuncoesbasicas)
+    DBG_ConsVenda: TDBGrid;
+    TB_Vendas: TClientDataSet;
+    DSP_Vendas: TDataSetProvider;
+    ds_CadVendas: TDataSource;
+    TB_VendasID_VENDA: TIntegerField;
+    TB_VendasID_PRODUTO: TIntegerField;
+    TB_VendasPRODUTO: TStringField;
+    TB_VendasNUM_VENDA: TIntegerField;
+    TB_VendasDATA_VENDA: TSQLTimeStampField;
+    TB_VendasQUANTIDADE: TIntegerField;
+    TB_VendasVALOR_UNITARIO: TFMTBCDField;
+    TB_VendasVALOR_TOTAL: TFMTBCDField;
+    procedure FormCreate(Sender: TObject);
+    procedure btn_TodosClick(Sender: TObject);
+    procedure btn_IncluirClick(Sender: TObject);
+    procedure btn_AlterarClick(Sender: TObject);
+  private
+    { Private declarations }
+    Vendas: TVendasControl;
+    ATipo: TAcao;
+    procedure ConsultaTodasVendas;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConsultaFuncoesbasicasVendas: TfrmConsultaFuncoesbasicasVendas;
+
+implementation
+
+{$R *.dfm}
+
+uses ManutencaoFcoesbasicasVendasVIEW;
+
+procedure TfrmConsultaFuncoesbasicasVendas.btn_AlterarClick(Sender: TObject);
+begin
+  inherited;
+  //Tabela está vazia
+  if TB_Vendas.RecordCount = 0 then
+  begin
+    messagedlg('A consulta está vazia, selecione um registro!',mtError,[mbok],0);
+    Exit;
+  end
+  else
+  begin
+    frmManutencaoFuncoesbasicasVendas :=TfrmManutencaoFuncoesbasicasVendas.create(Self);
+    //frmManutencaoFuncoesbasicasVendas.pnl_ConsFiltro.Visible := False;
+    frmManutencaoFuncoesbasicasVendas.pnl_Client.Visible     := True;
+    frmManutencaoFuncoesbasicasVendas.sAcao := 'Edit';
+    frmManutencaoFuncoesbasicasVendas.Caption := 'Manutenção - Funções básicas - Vendas [Alterando]';
+    frmManutencaoFuncoesbasicasVendas.ConfiguraBotoes(False, True, True, True);
+    frmManutencaoFuncoesbasicasVendas.TB_Vendas.CreateDataSet;
+    frmManutencaoFuncoesbasicasVendas.TB_Vendas.Insert;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasID_VENDA.AsInteger     := TB_VendasID_VENDA.AsInteger;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasID_PRODUTO.AsString    := TB_VendasID_PRODUTO.AsString;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasNUM_VENDA.AsString     := TB_VendasNUM_VENDA.AsString;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasDATA_VENDA.AsDateTime  := TB_VendasDATA_VENDA.AsDateTime;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasQUANTIDADE.AsFloat     := TB_VendasQUANTIDADE.AsFloat;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasVALOR_UNITARIO.AsFloat := TB_VendasVALOR_UNITARIO.AsFloat;
+    frmManutencaoFuncoesbasicasVendas.TB_VendasVALOR_TOTAL.AsFloat    := TB_VendasVALOR_TOTAL.AsFloat;
+    frmManutencaoFuncoesbasicasVendas.TB_Vendas.Post;
+    frmManutencaoFuncoesbasicasVendas.TB_Vendas.Edit;
+    frmManutencaoFuncoesbasicasVendas.ShowModal;
+  end;
+end;
+
+procedure TfrmConsultaFuncoesbasicasVendas.btn_IncluirClick(Sender: TObject);
+begin
+  inherited;
+  frmManutencaoFuncoesbasicasVendas :=TfrmManutencaoFuncoesbasicasVendas.create(Self);
+  //frmManutencaoFuncoesbasicasVendas.pnl_ConsFiltro.Visible := False;
+  frmManutencaoFuncoesbasicasVendas.pnl_Client.Visible     := True;
+  frmManutencaoFuncoesbasicasVendas.sAcao := 'Insert';
+  frmManutencaoFuncoesbasicasVendas.Caption := 'Manutenção - Funções básicas - Vendas [Inserindo]';
+  frmManutencaoFuncoesbasicasVendas.ConfiguraBotoes(False, False, True, True);
+  frmManutencaoFuncoesbasicasVendas.TB_Vendas.CreateDataSet;
+  frmManutencaoFuncoesbasicasVendas.TB_Vendas.Insert;
+  frmManutencaoFuncoesbasicasVendas.ShowModal;
+end;
+
+procedure TfrmConsultaFuncoesbasicasVendas.btn_TodosClick(Sender: TObject);
+begin
+  inherited;
+  ConsultaTodasVendas;
+end;
+
+procedure TfrmConsultaFuncoesbasicasVendas.ConsultaTodasVendas;
+begin
+  try
+    TB_Vendas.Close;
+    Vendas:= TVendasControl.Create;
+    DSP_Vendas.DataSet := Vendas.Obter('');
+    TB_Vendas.close;
+    TB_Vendas.Open;
+  finally
+    Vendas.Free;
+  end;
+end;
+
+procedure TfrmConsultaFuncoesbasicasVendas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  TB_Vendas.CreateDataSet;
+end;
+
+end.
